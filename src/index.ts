@@ -1,6 +1,7 @@
 import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
+import carsRouter from './routes/car.routes';
 
 
 const port = 8000;
@@ -13,6 +14,7 @@ app.get('/', (req, res) => {
     message : 'Hello World!'});
 });
 
+app.use('/cars', carsRouter);
 const server = http.createServer(app);
 server.listen(port, () => {
   console.log(`API Ruuning on port ${port}`);

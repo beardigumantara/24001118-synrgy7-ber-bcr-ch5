@@ -24,3 +24,5 @@ router.get("/:id", (req: Request, res: Response) => {
     data: carById,
   });
 })
+
+export default router;
