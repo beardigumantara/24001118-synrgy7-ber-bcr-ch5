@@ -7,28 +7,25 @@ export async function seed(knex: Knex): Promise<void> {
   // Inserts seed entries
   await knex("cars").insert([
     {
-      id: 1,
       name: "Toyota",
       price: "Rp700.000",
-      image: "https://images.bisnis.com/thumb/posts/2019/03/31/906567/supra-baru.jpg?w=450&h=237",
+      image: "https://images.bisnis.com/thumb/posts/2019/03/31/906567/supra-baru.jpg?w=450&h=237", //change image url from your image cloudinary
       start_rent: new Date("2024-05-18 15:56:00"),
       finish_rent: new Date("2024-05-18 15:56:00"),
       availability: true,
     },
     {
-        id: 2,
         name: "Subaru",
         price: "Rp900.000",
-        image: "https://images.bisnis.com/thumb/posts/2019/03/31/906567/supra-baru.jpg?w=450&h=237",
+        image: "https://images.bisnis.com/thumb/posts/2019/03/31/906567/supra-baru.jpg?w=450&h=237", //change image url from your image cloudinary
         start_rent: new Date("2024-05-18 15:56:00"),
         finish_rent: new Date("2024-05-18 15:56:00"),
         availability: true,
       },
       {
-        id: 3,
         name: "Daihatsu",
         price: "Rp200.000",
-        image: "https://media.suara.com/pictures/653x366/2022/09/03/54583-ilustrasi-daihatsu-sigra.jpg",
+        image: "https://media.suara.com/pictures/653x366/2022/09/03/54583-ilustrasi-daihatsu-sigra.jpg", //change image url from your image cloudinary
         start_rent: new Date("2024-05-18 15:56:00"),
         finish_rent: new Date("2024-05-18 15:56:00"),
         availability: true,

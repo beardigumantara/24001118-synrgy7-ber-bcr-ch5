@@ -11,7 +11,7 @@
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
     "migrate:make": "knex migrate:make",
     "migrate:latest": "knex migrate:latest",
-    "seed:make": "knex seed:make", 
+    "seed:make": "knex seed:make",
     "seed:run": "knex seed:run"
   },
   "author": "",
@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
+    "@types/multer": "^1.4.11",
     "@types/node": "^20.12.12",
     "@types/pg": "^8.11.6",
     "@types/uuid": "^9.0.8",
