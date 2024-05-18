@@ -1,6 +1,8 @@
 import { Router, Request, Response } from "express";
 import { cars } from "../__data_mocks__/cars";
 import { CarsModel } from "../models/CarsModel";
+import { mUpload } from "../middlewares/multer";
+import cloudinary from "../config/cloudinary";
 
 const router = Router();
 
@@ -68,6 +70,23 @@ router.delete("/:id", async (req: Request, res: Response) => {
   res.status(202).json({
     message: "Delete a car",
     car,
+  });
+});
+
+// image upload cloudinary
+router.post("/cloud/imageupload", mUpload.single('file'), async (req: Request, res: Response) => {
+  const fileBase64 = req.file?.buffer.toString('base64');
+  const file = `data:${req.file?.mimetype};base64,${fileBase64}`;
+
+  cloudinary.uploader.upload(file,
+    {folder: 'bcr', use_filename: true,}, (error: any, result: any) => {
+    if (error) {
+      res.status(400).json({
+        message: "Bad Request",
+      });
+    } else {
+      res.json({message: 'success upload file', data:{image_Url: result.url}});
+    }
   });
 });
 
