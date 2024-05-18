@@ -50,4 +50,13 @@ router.post("/create", async (req: Request, res: Response) => {
     });
 });
 
+router.delete("/:id", async (req: Request, res: Response) => {
+  const getId: number = Number(req.params.id);
+  const car = await CarsModel.query().deleteById(getId).throwIfNotFound().returning("*");
+  res.status(202).json({
+    message: "Delete a car",
+    car,
+  });
+});
+
 export default router;
