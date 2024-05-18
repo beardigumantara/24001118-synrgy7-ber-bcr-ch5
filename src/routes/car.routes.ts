@@ -45,6 +45,23 @@ router.post("/create", async (req: Request, res: Response) => {
   }
 });
 
+// Update a car
+router.put("/:id", async (req: Request, res: Response) => {
+  try {
+    const getId: number = Number(req.params.id);
+    const car = await CarsModel.query().findById(getId).patch(req.body).returning("*");
+    res.status(200).json({
+      message: "Update a car",
+      car,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Bad Request"
+    });
+  }
+});
+
+// Delete a car
 router.delete("/:id", async (req: Request, res: Response) => {
   const getId: number = Number(req.params.id);
   const car = await CarsModel.query().deleteById(getId).throwIfNotFound().returning("*");
