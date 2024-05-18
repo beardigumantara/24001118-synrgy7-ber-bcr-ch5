@@ -32,22 +32,17 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 // POST a car
 router.post("/create", async (req: Request, res: Response) => {
-  // try {
-  //   const car = await CarsModel.query().insert(req.body).returning("*");
-  //   res.status(201).json({
-  //     message: "Post a car",
-  //     car,
-  //   });
-  // } catch (error) {
-  //   res.status(400).json({
-  //     message: "Bad Request"
-  //   });
-  // }
-  const car = await CarsModel.query().insert(req.body).returning("*");
+  try {
+    const car = await CarsModel.query().insert(req.body).returning("*");
     res.status(201).json({
       message: "Post a car",
       car,
     });
+  } catch (error) {
+    res.status(400).json({
+      message: "Bad Request"
+    });
+  }
 });
 
 router.delete("/:id", async (req: Request, res: Response) => {
