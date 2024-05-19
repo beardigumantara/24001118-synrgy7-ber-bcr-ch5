@@ -33,18 +33,34 @@ router.get("/:id", async (req: Request, res: Response) => {
 })
 
 // POST a car
-router.post("/create", async (req: Request, res: Response) => {
-  try {
-    const car = await CarsModel.query().insert(req.body).returning("*");
+router.post("/create", mUpload.single('image'), async (req: Request, res: Response) => {
+    const fileBase64 = req.file?.buffer.toString('base64');
+    const file = `data:${req.file?.mimetype};base64,${fileBase64}`;
+
+    const result = await cloudinary.uploader.upload(file, {
+      folder: 'bcr',
+      use_filename: true,
+    });
+    const {name, price, start_rent, finish_rent, availability} = req.body;
+
+    // Create a new car entry with the Cloudinary image URL
+    const car = await CarsModel.query().insert({
+      name,
+      price,
+      image: result.url,
+      start_rent,
+      finish_rent,
+      availability,
+    }).returning("*");
+
+    console.log({car});
+    
+
+    // Respond with the created car details
     res.status(201).json({
-      message: "Post a car",
+      message: "Car created successfully",
       car,
     });
-  } catch (error) {
-    res.status(400).json({
-      message: "Bad Request"
-    });
-  }
 });
 
 // Update a car
@@ -70,23 +86,6 @@ router.delete("/:id", async (req: Request, res: Response) => {
   res.status(202).json({
     message: "Delete a car",
     car,
-  });
-});
-
-// image upload cloudinary
-router.post("/cloud/imageupload", mUpload.single('file'), async (req: Request, res: Response) => {
-  const fileBase64 = req.file?.buffer.toString('base64');
-  const file = `data:${req.file?.mimetype};base64,${fileBase64}`;
-
-  cloudinary.uploader.upload(file,
-    {folder: 'bcr', use_filename: true,}, (error: any, result: any) => {
-    if (error) {
-      res.status(400).json({
-        message: "Bad Request",
-      });
-    } else {
-      res.json({message: 'success upload file', data:{image_Url: result.url}});
-    }
   });
 });
 
