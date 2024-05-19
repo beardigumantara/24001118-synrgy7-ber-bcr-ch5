@@ -33,5 +33,6 @@ app.get('/', (req, res) => {
 app.use('/api/cars', carsRouter);
 const server = http.createServer(app);
 server.listen(port, () => {
-  console.log(`API Ruuning on port ${port}`);
+  console.log('========= Connected to Server =========');
+  console.log(`Server: running at http://localhost:${port}`);
 });
