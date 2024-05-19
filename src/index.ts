@@ -4,7 +4,9 @@ import bodyParser from 'body-parser';
 import carsRouter from './routes/car.routes';
 import knex from 'knex';
 import { Model } from 'objection';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 const port = 8000;
 const app = express();
@@ -12,10 +14,10 @@ const app = express();
 const knexInstance = knex({
   client: "postgresql",
   connection: {
-    database: "postgres",
-    user: "postgres",
-    password: "123456", 
-    port: 5432
+    database: process.env.PG_DBASE,
+    user: process.env.PG_USER,
+    password: process.env.PG_PASS, 
+    port: Number(process.env.PG_PORT) ||5432
   }
 });
 
@@ -28,7 +30,7 @@ app.get('/', (req, res) => {
     message : 'Hello World!'});
 });
 
-app.use('/cars', carsRouter);
+app.use('/api/cars', carsRouter);
 const server = http.createServer(app);
 server.listen(port, () => {
   console.log(`API Ruuning on port ${port}`);
