@@ -64,19 +64,29 @@ router.post("/create", mUpload.single('image'), async (req: Request, res: Respon
 });
 
 // Update a car
-router.put("/:id", async (req: Request, res: Response) => {
-  try {
-    const getId: number = Number(req.params.id);
-    const car = await CarsModel.query().findById(getId).patch(req.body).returning("*");
-    res.status(200).json({
-      message: "Update a car",
-      car,
-    });
-  } catch (error) {
-    res.status(400).json({
-      message: "Bad Request"
-    });
-  }
+router.put("/:id", mUpload.single('image'), async (req: Request, res: Response) => {
+  const fileBase64 = req.file?.buffer.toString('base64');
+  const file = `data:${req.file?.mimetype};base64,${fileBase64}`;
+
+  const result = await cloudinary.uploader.upload(file, {
+    folder: 'bcr',
+    use_filename: true,
+  });
+  const {name, price, start_rent, finish_rent, availability} = req.body;
+  const getId: number = Number(req.params.id);
+  const car = await CarsModel.query().findById(getId).patch({
+    name,
+    price,
+    image: result.url,
+    start_rent,
+    finish_rent,
+    availability,
+  }).returning("*");
+  
+  res.status(200).json({
+    message: "Update a car",
+    car,
+  });
 });
 
 // Delete a car
